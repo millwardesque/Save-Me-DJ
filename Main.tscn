@@ -12,4 +12,10 @@ Album = ExtResource( 3 )
 [node name="HUD" parent="." instance=ExtResource( 1 )]
 
 [node name="AlbumShelf" parent="." instance=ExtResource( 4 )]
-position = Vector2( 283.176, 178.021 )
+position = Vector2( 103.277, 85.0731 )
+
+[node name="AlbumShelf2" parent="." instance=ExtResource( 4 )]
+position = Vector2( 101.778, 139.043 )
+
+[node name="AlbumInbox" parent="." instance=ExtResource( 4 )]
+position = Vector2( 416.601, 387.903 )

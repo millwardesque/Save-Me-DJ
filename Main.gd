@@ -19,6 +19,9 @@ func _ready():
 	for i in range(0, 5):
 		$AlbumShelf.remove_album(i)
 		$AlbumShelf.add_album(i, Album.instance())
+		
+		$AlbumShelf2.remove_album(i)
+		$AlbumShelf2.add_album(i, Album.instance())
 	
 func _on_album_highlighted(album):
 	$HUD.set_hightlighted_album(album.album_string())
@@ -32,9 +35,13 @@ func _on_album_selected(album):
 	
 func _on_album_contextual_action(album):
 	if selected_album != null and selected_album != album:
-		var selected_index = $AlbumShelf.album_index(selected_album)
-		$AlbumShelf.set_empty_album(selected_index)
-		$AlbumShelf.replace_album(selected_album, album)
+		# Remove the selected album from its shelf
+		if selected_album.album_shelf != null:
+			var selected_index = selected_album.album_shelf.album_index(selected_album)
+			selected_album.album_shelf.set_empty_album(selected_index)
+		
+		# Replace the clicked album with the selected album
+		album.album_shelf.replace_album(selected_album, album)
 		
 		_on_album_selected(album)
 
@@ -44,17 +51,20 @@ func _on_album_deselected():
 
 func _on_empty_album_contextual_action(album):
 	if selected_album != null:
-		var selected_index = $AlbumShelf.album_index(selected_album)
-		$AlbumShelf.set_empty_album(selected_index)
-		$AlbumShelf.replace_album(selected_album, album)
+		# Remove the selected album from its shelf
+		if selected_album.album_shelf != null:
+			var selected_index = selected_album.album_shelf.album_index(selected_album)
+			selected_album.album_shelf.set_empty_album(selected_index)
+		
+		# Replace the clicked album with the selected album
+		album.album_shelf.replace_album(selected_album, album)
 		
 		_on_album_deselected()
 
-# @TODO Multiple shelves
+# @TODO Add new albums to inbox shelf
 # @TODO Remove album and put on record player
 # @TODO Phone requests
 # @TODO Timer / succeed / fail phone requests
-# @TODO Add new albums to inbox shelf
 # @TODO Basic UI
 # @TODO Score
 # @TODO Time elapsed
