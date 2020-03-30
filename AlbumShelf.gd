@@ -38,7 +38,6 @@ func album_index(album):
 
 func add_album(index, album):
 	if index >= 0 and index < max_albums:
-		
 		add_child(album)
 		albums[index] = album
 		album.album_shelf = self
@@ -53,3 +52,14 @@ func remove_album(index):
 		return to_remove
 	else:
 		return null
+		
+func has_space():
+	return next_empty_album() != null
+	
+func next_empty_album():
+	for i in range(max_albums):
+		if albums[i].get_filename() == empty_album.get_path():
+			return i
+			
+	return null
+	

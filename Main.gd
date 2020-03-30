@@ -23,6 +23,8 @@ func _ready():
 		$AlbumShelf2.remove_album(i)
 		$AlbumShelf2.add_album(i, Album.instance())
 	
+	$NewAlbumTimer.start()
+	
 func _on_album_highlighted(album):
 	$HUD.set_hightlighted_album(album.album_string())
 
@@ -61,7 +63,12 @@ func _on_empty_album_contextual_action(album):
 		
 		_on_album_deselected()
 
-# @TODO Add new albums to inbox shelf
+func _on_NewAlbumTimer_timeout():
+	var next_space = $AlbumInbox.next_empty_album()
+	if next_space != null:
+		$AlbumInbox.remove_album(next_space)
+		$AlbumInbox.add_album(next_space, Album.instance())
+		
 # @TODO Remove album and put on record player
 # @TODO Phone requests
 # @TODO Timer / succeed / fail phone requests
@@ -71,3 +78,4 @@ func _on_empty_album_contextual_action(album):
 # @TODO Artist / title database
 # @TODO Polish
 # @TODO Drag-and-drop?
+

@@ -19,3 +19,7 @@ position = Vector2( 101.778, 139.043 )
 
 [node name="AlbumInbox" parent="." instance=ExtResource( 4 )]
 position = Vector2( 416.601, 387.903 )
+
+[node name="NewAlbumTimer" type="Timer" parent="."]
+wait_time = 5.0
+[connection signal="timeout" from="NewAlbumTimer" to="." method="_on_NewAlbumTimer_timeout"]
