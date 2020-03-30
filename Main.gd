@@ -15,7 +15,10 @@ func _ready():
 	
 	Events.connect('album_contextual_action', self, '_on_album_contextual_action')
 	Events.connect('empty_album_contextual_action', self, '_on_empty_album_contextual_action')
-	
+
+	Events.connect('record_player_selected', self, '_on_record_player_selected')
+	Events.connect('record_player_contextual_action', self, '_on_record_player_contextual_action')
+		
 	for i in range(0, 5):
 		$AlbumShelf.remove_album(i)
 		$AlbumShelf.add_album(i, Album.instance())
@@ -26,10 +29,10 @@ func _ready():
 	$NewAlbumTimer.start()
 	
 func _on_album_highlighted(album):
-	$HUD.set_hightlighted_album(album.album_string())
+	$HUD.set_highlighted_album(album.album_string())
 
 func _on_album_unhighlighted():
-	$HUD.clear_hightlighted_album()
+	$HUD.clear_highlighted_album()
 	
 func _on_album_selected(album):
 	selected_album = album
@@ -41,6 +44,9 @@ func _on_album_contextual_action(album):
 		if selected_album.album_shelf != null:
 			var selected_index = selected_album.album_shelf.album_index(selected_album)
 			selected_album.album_shelf.set_empty_album(selected_index)
+		elif selected_album == $RecordPlayer.album:
+			$RecordPlayer.album = null
+			$HUD.clear_playing_album()
 		
 		# Replace the clicked album with the selected album
 		album.album_shelf.replace_album(selected_album, album)
@@ -57,6 +63,9 @@ func _on_empty_album_contextual_action(album):
 		if selected_album.album_shelf != null:
 			var selected_index = selected_album.album_shelf.album_index(selected_album)
 			selected_album.album_shelf.set_empty_album(selected_index)
+		elif selected_album == $RecordPlayer.album:
+			$RecordPlayer.album = null
+			$HUD.clear_playing_album()
 		
 		# Replace the clicked album with the selected album
 		album.album_shelf.replace_album(selected_album, album)
@@ -68,8 +77,31 @@ func _on_NewAlbumTimer_timeout():
 	if next_space != null:
 		$AlbumInbox.remove_album(next_space)
 		$AlbumInbox.add_album(next_space, Album.instance())
+
+func _on_record_player_selected(record_player):
+	if record_player.album != null:
+		_on_album_selected(record_player.album)
+	
+func _on_record_player_contextual_action(record_player):
+	if selected_album != null and selected_album != record_player.album:
+		# Remove the selected album from its shelf
+		if selected_album.album_shelf != null:
+			var selected_index = selected_album.album_shelf.album_index(selected_album)
+			selected_album.album_shelf.set_empty_album(selected_index)
+			
+		var old_album = record_player.album
 		
-# @TODO Remove album and put on record player
+		# Put the album on the record player
+		record_player.album = selected_album
+		
+		# Select the old album
+		if old_album != null:		
+			_on_album_selected(old_album)
+		else:
+			_on_album_deselected()
+			
+		$HUD.set_playing_album(record_player.album.album_string())
+		
 # @TODO Phone requests
 # @TODO Timer / succeed / fail phone requests
 # @TODO Basic UI
@@ -77,5 +109,7 @@ func _on_NewAlbumTimer_timeout():
 # @TODO Time elapsed
 # @TODO Artist / title database
 # @TODO Polish
+#	- Album-on-record-player sprite
 # @TODO Drag-and-drop?
+# @TODO HUD should listen directly for signals?
 
