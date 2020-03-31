@@ -3,6 +3,7 @@ extends Node
 export (PackedScene) var Album
 var Events
 var selected_album
+var active_question = null
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
@@ -18,6 +19,8 @@ func _ready():
 
 	Events.connect('record_player_selected', self, '_on_record_player_selected')
 	Events.connect('record_player_contextual_action', self, '_on_record_player_contextual_action')
+	
+	Events.connect('phone_contextual_action', self, '_on_phone_contextual_action')
 		
 	for i in range(0, 5):
 		$AlbumShelf.remove_album(i)
@@ -27,6 +30,7 @@ func _ready():
 		$AlbumShelf2.add_album(i, Album.instance())
 	
 	$NewAlbumTimer.start()
+	$NewPhoneTimer.start()
 	
 func _on_album_highlighted(album):
 	$HUD.set_highlighted_album(album.album_string())
@@ -78,6 +82,10 @@ func _on_NewAlbumTimer_timeout():
 		$AlbumInbox.remove_album(next_space)
 		$AlbumInbox.add_album(next_space, Album.instance())
 
+func _on_NewPhoneTimer_timeout():
+	if not $Phone.is_ringing and not $Phone.is_online:
+		$Phone.trigger_call()
+
 func _on_record_player_selected(record_player):
 	if record_player.album != null:
 		_on_album_selected(record_player.album)
@@ -99,17 +107,43 @@ func _on_record_player_contextual_action(record_player):
 			_on_album_selected(old_album)
 		else:
 			_on_album_deselected()
+		
+		if active_question != null:
+			if $Phone.check_album(record_player.album):
+				$Phone.end_call()
+				active_question = null
+				$HUD.clear_phone_dialog()
+			else:
+				$HUD.set_phone_dialog("Nah, try again! " + active_question['question'])
 			
 		$HUD.set_playing_album(record_player.album.album_string())
 		
+func _on_phone_contextual_action(phone):
+	if phone.is_ringing:
+		active_question = phone.answer_call()
+		$HUD.set_phone_dialog(active_question['question'])
+	elif phone.is_online:
+		phone.end_call()
+		active_question = null
+		$NewPhoneTimer.start()	# Reset the phone timer
+		$HUD.clear_phone_dialog()
+		
 # @TODO Phone requests
+# 		- Make sure that the album that's playing doesn't match the request
+#		- More request types / predicates
 # @TODO Timer / succeed / fail phone requests
+# @TODO Remove album from shelf/record player on select
 # @TODO Basic UI
+#	- Show selected album at cursor
 # @TODO Score
 # @TODO Time elapsed
-# @TODO Artist / title database
+# @TODO Central artist / title database to minimize space usage
+# @TODO Phone request database
 # @TODO Polish
 #	- Album-on-record-player sprite
-# @TODO Drag-and-drop?
-# @TODO HUD should listen directly for signals?
-
+# @IDEA Drag-and-drop?
+# @IDEA HUD should listen directly for signals?
+# @IDEA Combo request types?
+# @IDEA Make sure that the player can handle the phone request?
+# @IDEA Enemies occasionally attack your place unless you play the right track?
+# @IDEA Calls also give clues re: which types of music affect which types of enemies?

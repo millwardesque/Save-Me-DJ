@@ -38,3 +38,15 @@ align = 1
 __meta__ = {
 "_edit_use_anchors_": false
 }
+
+[node name="PhoneDialog" type="Label" parent="."]
+anchor_top = 0.5
+anchor_bottom = 0.5
+margin_top = -7.5
+margin_right = 217.0
+margin_bottom = 87.5
+text = "<no caller>"
+align = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}

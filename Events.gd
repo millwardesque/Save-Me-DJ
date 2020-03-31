@@ -12,3 +12,5 @@ signal empty_album_contextual_action(album)
 
 signal record_player_selected(record_player)
 signal record_player_contextual_action(record_player)
+
+signal phone_contextual_action(phone)

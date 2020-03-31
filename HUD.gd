@@ -33,3 +33,11 @@ func set_playing_album(album_string):
 
 func clear_playing_album():
 	$PlayingAlbum.text = "Now playing: Nothing"
+
+func set_phone_dialog(dialog_string):
+	if dialog_string != "":
+		dialog_string = "Caller: " + dialog_string
+	$PhoneDialog.text = dialog_string
+
+func clear_phone_dialog():
+	$PhoneDialog.text = "<no caller>"

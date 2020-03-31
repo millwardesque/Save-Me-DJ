@@ -32,7 +32,7 @@ func album_set(new_album):
 
 	return old_album
 	
-func _on_RecordPlayer_input_event(viewport, event, shape_idx):
+func _on_RecordPlayer_input_event(_viewport, event, _shape_idx):
 	if (event.is_pressed() and event.button_index == BUTTON_LEFT):
 		Events.emit_signal('record_player_selected', self)
 	elif (event.is_pressed() and event.button_index == BUTTON_RIGHT):

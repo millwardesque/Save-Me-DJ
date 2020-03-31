@@ -49,6 +49,9 @@ func album_shelf_set(new_shelf):
 	
 func album_shelf_get():
 	return album_shelf
+	
+func decade():
+	return int(floor(year / 10) * 10)
 
 func _on_Album_mouse_entered():
 	$AnimatedSprite.set_modulate(highlight_colour)
