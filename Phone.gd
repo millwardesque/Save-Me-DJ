@@ -9,6 +9,18 @@ var questions = [
 			"decade": null,
 		},
 	},
+	{
+		"question": "Help! Play something from {artist}",
+		"answer_predicates": {
+			"artist": null,
+		},
+	},
+	{
+		"question": "Can you play that song {title}",
+		"answer_predicates": {
+			"title": null,
+		},
+	},
 ]
 
 var is_ringing = false setget ,is_ringing_get
@@ -31,13 +43,21 @@ func trigger_call():
 	
 	$AnimatedSprite.set_modulate(Color(1.0, 0.0, 0.0))
 	
-func answer_call():
+func answer_call(currently_playing, all_albums):
 	is_ringing = false
 	is_online = true
 	
 	$AnimatedSprite.set_modulate(Color(0.0, 1.0, 0.0))
-	active_question = questions[randi() % questions.size()].duplicate()
-	fill_template(active_question)
+	
+	var generate_question = true
+	while generate_question:
+		active_question = questions[randi() % questions.size()].duplicate()
+		fill_template(active_question, all_albums)
+		
+		generate_question = false
+		if currently_playing != null:
+			generate_question = check_album(currently_playing)
+
 	return active_question
 		
 func end_call():
@@ -50,18 +70,40 @@ func check_album(album):
 	if active_question:
 		if active_question.answer_predicates.has('decade') and active_question.answer_predicates['decade'] != album.decade():
 			return false
+		
+		if active_question.answer_predicates.has('artist') and active_question.answer_predicates['artist'] != album.artist:
+			return false
+			
+		if active_question.answer_predicates.has('title') and active_question.answer_predicates['title'] != album.title:
+			return false
 
 		return true
 	return null
 	
-func fill_template(question):
+func fill_template(question, all_albums):
 	var year = int(rand_range(1950, 2050))
 	var decade = int(floor(year / 10)) * 10
 	
-	question["question"] = question["question"].replace('{decade}', decade)
+	var artists = {}
+	var titles = {}
+	for album in all_albums:
+		artists[album.artist] = 0
+		titles[album.title] = 0
+	var artist = artists.keys()[randi() % artists.keys().size()]
+	var title = titles.keys()[randi() % titles.keys().size()]
 	
+	question["question"] = question["question"].replace('{artist}', artist)
+	question["question"] = question["question"].replace('{decade}', decade)
+	question["question"] = question["question"].replace('{title}', title)
+	
+	if question["answer_predicates"].has("artist"):
+		question["answer_predicates"]["artist"] = artist
+		
 	if question["answer_predicates"].has("decade"):
-		question["answer_predicates"]["decade"] = decade	
+		question["answer_predicates"]["decade"] = decade
+		
+	if question["answer_predicates"].has("title"):
+		question["answer_predicates"]["title"] = title
 
 func _on_Phone_input_event(_viewport, event, _shape_idx):
 	if (event.is_pressed() and event.button_index == BUTTON_RIGHT):

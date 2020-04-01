@@ -21,7 +21,7 @@ func _ready():
 	Events.connect('record_player_contextual_action', self, '_on_record_player_contextual_action')
 	
 	Events.connect('phone_contextual_action', self, '_on_phone_contextual_action')
-		
+			
 	for i in range(0, 5):
 		$AlbumShelf.remove_album(i)
 		$AlbumShelf.add_album(i, Album.instance())
@@ -120,18 +120,27 @@ func _on_record_player_contextual_action(record_player):
 		
 func _on_phone_contextual_action(phone):
 	if phone.is_ringing:
-		active_question = phone.answer_call()
+		active_question = phone.answer_call($RecordPlayer.album, all_albums())
 		$HUD.set_phone_dialog(active_question['question'])
 	elif phone.is_online:
 		phone.end_call()
 		active_question = null
 		$NewPhoneTimer.start()	# Reset the phone timer
 		$HUD.clear_phone_dialog()
+
+func all_albums():
+	var albums = []
+	
+	albums += $AlbumShelf.albums
+	albums += $AlbumShelf2.albums
+	albums += $AlbumInbox.albums
+	
+	if $RecordPlayer.album:
+		albums.append($RecordPlayer.album)
 		
-# @TODO Phone requests
-# 		- Make sure that the album that's playing doesn't match the request
-#		- More request types / predicates
-# @TODO Timer / succeed / fail phone requests
+	return albums
+	
+	# @TODO Timer / succeed / fail phone requests
 # @TODO Remove album from shelf/record player on select
 # @TODO Basic UI
 #	- Show selected album at cursor
@@ -147,3 +156,4 @@ func _on_phone_contextual_action(phone):
 # @IDEA Make sure that the player can handle the phone request?
 # @IDEA Enemies occasionally attack your place unless you play the right track?
 # @IDEA Calls also give clues re: which types of music affect which types of enemies?
+# @TODO Support dynamic number of shelves (in all_albums, among other places)

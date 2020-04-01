@@ -4,8 +4,7 @@ export var max_albums = 10
 export var album_width = 4
 export (PackedScene) var empty_album
 
-var albums = []
-
+var albums = [] setget ,albums_get
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
@@ -13,6 +12,14 @@ func _ready():
 	for i in range(max_albums):
 		add_album(i, empty_album.instance())
 
+func albums_get():
+	var real_albums = []
+	for i in range(max_albums):
+		if albums[i].get_filename() != empty_album.get_path():
+			real_albums.append(albums[i])
+	
+	return real_albums
+	
 func replace_album(new_album, to_be_replaced):
 	var index = album_index(to_be_replaced)
 	if index != null:
