@@ -20,7 +20,7 @@ position = Vector2( 383.62, 79.0765 )
 position = Vector2( 385.119, 128.549 )
 
 [node name="AlbumInbox" parent="." instance=ExtResource( 4 )]
-position = Vector2( 416.601, 440.374 )
+position = Vector2( 653.468, 109.06 )
 
 [node name="RecordPlayer" parent="." instance=ExtResource( 5 )]
 position = Vector2( 749.579, 391.28 )
@@ -29,10 +29,10 @@ position = Vector2( 749.579, 391.28 )
 position = Vector2( 43.4754, 383.784 )
 
 [node name="NewAlbumTimer" type="Timer" parent="."]
-wait_time = 5.0
+wait_time = 20.0
 
 [node name="NewPhoneTimer" type="Timer" parent="."]
-wait_time = 6.0
+wait_time = 10.0
 
 [node name="HPCountdownTimer" type="Timer" parent="."]
 [connection signal="timeout" from="NewAlbumTimer" to="." method="_on_NewAlbumTimer_timeout"]
