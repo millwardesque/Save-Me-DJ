@@ -1,14 +1,9 @@
 extends CanvasLayer
 
 
-# Declare member variables here. Examples:
-# var a = 2
-# var b = "text"
-
-
 # Called when the node enters the scene tree for the first time.
 func _ready():
-	pass # Replace with function body.
+	hide_game_over()
 
 func set_highlighted_album(album_string):
 	if album_string != "":
@@ -41,3 +36,16 @@ func set_phone_dialog(dialog_string):
 
 func clear_phone_dialog():
 	$PhoneDialog.text = "<no caller>"
+
+func set_score(score):
+	$Score.text = "Score: " + str(score)
+	
+func set_hp(hp):
+	$HP.text = "HP: " + str(int(hp))
+
+func show_game_over(score):
+	$GameOver.text = "Game over!\nScore: " + str(score)
+	$GameOver.show()
+
+func hide_game_over():
+	$GameOver.hide()

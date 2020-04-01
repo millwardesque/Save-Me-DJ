@@ -4,6 +4,11 @@ export (PackedScene) var Album
 var Events
 var selected_album
 var active_question = null
+var score = 0 setget score_set
+
+var max_hp = 100.0
+var hp = 0.0 setget hp_set
+var hp_drain_per_sec = 1.0
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
@@ -21,7 +26,11 @@ func _ready():
 	Events.connect('record_player_contextual_action', self, '_on_record_player_contextual_action')
 	
 	Events.connect('phone_contextual_action', self, '_on_phone_contextual_action')
-			
+		
+	hp_set(max_hp)
+	
+	score_set(0)
+	
 	for i in range(0, 5):
 		$AlbumShelf.remove_album(i)
 		$AlbumShelf.add_album(i, Album.instance())
@@ -31,6 +40,8 @@ func _ready():
 	
 	$NewAlbumTimer.start()
 	$NewPhoneTimer.start()
+	$HPCountdownTimer.start()
+	
 	
 func _on_album_highlighted(album):
 	$HUD.set_highlighted_album(album.album_string())
@@ -113,6 +124,10 @@ func _on_record_player_contextual_action(record_player):
 				$Phone.end_call()
 				active_question = null
 				$HUD.clear_phone_dialog()
+				
+				score_set(score + 1)
+				
+				hp_set(hp + 5)
 			else:
 				$HUD.set_phone_dialog("Nah, try again! " + active_question['question'])
 			
@@ -140,20 +155,24 @@ func all_albums():
 		
 	return albums
 	
-	# @TODO Timer / succeed / fail phone requests
-# @TODO Remove album from shelf/record player on select
-# @TODO Basic UI
-#	- Show selected album at cursor
-# @TODO Score
-# @TODO Time elapsed
-# @TODO Central artist / title database to minimize space usage
-# @TODO Phone request database
-# @TODO Polish
-#	- Album-on-record-player sprite
-# @IDEA Drag-and-drop?
-# @IDEA HUD should listen directly for signals?
-# @IDEA Combo request types?
-# @IDEA Make sure that the player can handle the phone request?
-# @IDEA Enemies occasionally attack your place unless you play the right track?
-# @IDEA Calls also give clues re: which types of music affect which types of enemies?
-# @TODO Support dynamic number of shelves (in all_albums, among other places)
+func score_set(value):
+	score = value
+	$HUD.set_score(score)
+	
+func hp_set(value):
+	var is_dead = false
+	hp = value
+	if hp <= 0.0:
+		is_dead = true
+		hp = 0.0
+		
+	$HUD.set_hp(hp)
+	
+	if is_dead:
+		_on_game_over()
+
+func _on_HPCountdownTimer_timeout():
+	hp_set(hp - hp_drain_per_sec)
+
+func _on_game_over():
+	$HUD.show_game_over(score)

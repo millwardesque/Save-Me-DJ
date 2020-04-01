@@ -32,6 +32,9 @@ position = Vector2( 43.4754, 383.784 )
 wait_time = 5.0
 
 [node name="NewPhoneTimer" type="Timer" parent="."]
-wait_time = 3.0
+wait_time = 6.0
+
+[node name="HPCountdownTimer" type="Timer" parent="."]
 [connection signal="timeout" from="NewAlbumTimer" to="." method="_on_NewAlbumTimer_timeout"]
 [connection signal="timeout" from="NewPhoneTimer" to="." method="_on_NewPhoneTimer_timeout"]
+[connection signal="timeout" from="HPCountdownTimer" to="." method="_on_HPCountdownTimer_timeout"]

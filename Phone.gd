@@ -80,16 +80,16 @@ func check_album(album):
 		return true
 	return null
 	
-func fill_template(question, all_albums):
-	var year = int(rand_range(1950, 2050))
-	var decade = int(floor(year / 10)) * 10
-	
+func fill_template(question, all_albums):	
 	var artists = {}
+	var decades = {}
 	var titles = {}
 	for album in all_albums:
 		artists[album.artist] = 0
+		decades[album.decade()] = 0
 		titles[album.title] = 0
 	var artist = artists.keys()[randi() % artists.keys().size()]
+	var decade = decades.keys()[randi() % decades.keys().size()]
 	var title = titles.keys()[randi() % titles.keys().size()]
 	
 	question["question"] = question["question"].replace('{artist}', artist)
