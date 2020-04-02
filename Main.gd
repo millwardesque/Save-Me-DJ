@@ -26,6 +26,7 @@ func _ready():
 	Events.connect('record_player_contextual_action', self, '_on_record_player_contextual_action')
 	
 	Events.connect('phone_contextual_action', self, '_on_phone_contextual_action')
+	Events.connect('phone_caller_hangup', self, '_on_phone_caller_hangup')
 		
 	hp_set(max_hp)
 	
@@ -96,6 +97,7 @@ func _on_NewAlbumTimer_timeout():
 func _on_NewPhoneTimer_timeout():
 	if not $Phone.is_ringing and not $Phone.is_online:
 		$Phone.trigger_call()
+		$NoAnswerPhoneTimer.start()
 
 func _on_record_player_selected(record_player):
 	if record_player.album != null:
@@ -121,12 +123,8 @@ func _on_record_player_contextual_action(record_player):
 		
 		if active_question != null:
 			if $Phone.check_album(record_player.album):
-				$Phone.end_call()
-				active_question = null
-				$HUD.clear_phone_dialog()
-				
+				end_call($Phone)				
 				score_set(score + 1)
-				
 				hp_set(hp + 5)
 			else:
 				$HUD.set_phone_dialog("Nah, try again! " + active_question['question'])
@@ -135,14 +133,25 @@ func _on_record_player_contextual_action(record_player):
 		
 func _on_phone_contextual_action(phone):
 	if phone.is_ringing:
+		$NoAnswerPhoneTimer.stop()
 		active_question = phone.answer_call($RecordPlayer.album, all_albums())
 		$HUD.set_phone_dialog(active_question['question'])
 	elif phone.is_online:
-		phone.end_call()
-		active_question = null
-		$NewPhoneTimer.start()	# Reset the phone timer
-		$HUD.clear_phone_dialog()
+		end_call(phone)
 
+func _on_phone_caller_hangup(phone):
+	end_call(phone)
+
+func _on_NoAnswerPhoneTimer_timeout():
+	end_call($Phone)
+	
+func end_call(phone):
+	phone.end_call()
+	active_question = null
+	$NoAnswerPhoneTimer.stop()	# Reset the phone timer
+	$NewPhoneTimer.start()	# Reset the phone timer
+	$HUD.clear_phone_dialog()
+	
 func all_albums():
 	var albums = []
 	

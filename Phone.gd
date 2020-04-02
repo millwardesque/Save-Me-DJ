@@ -57,7 +57,8 @@ func answer_call(currently_playing, all_albums):
 		generate_question = false
 		if currently_playing != null:
 			generate_question = check_album(currently_playing)
-
+	
+	$CallDurationTimer.start()
 	return active_question
 		
 func end_call():
@@ -65,6 +66,7 @@ func end_call():
 	is_online = false
 	active_question = null
 	$AnimatedSprite.set_modulate(Color(1.0, 1.0, 1.0))
+	$CallDurationTimer.stop()
 	
 func check_album(album):
 	if active_question:
@@ -108,3 +110,7 @@ func fill_template(question, all_albums):
 func _on_Phone_input_event(_viewport, event, _shape_idx):
 	if (event.is_pressed() and event.button_index == BUTTON_RIGHT):
 		Events.emit_signal('phone_contextual_action', self)
+
+
+func _on_CallDurationTimer_timeout():
+	Events.emit_signal('phone_caller_hangup', self)

@@ -34,7 +34,11 @@ wait_time = 20.0
 [node name="NewPhoneTimer" type="Timer" parent="."]
 wait_time = 10.0
 
+[node name="NoAnswerPhoneTimer" type="Timer" parent="."]
+wait_time = 3.0
+
 [node name="HPCountdownTimer" type="Timer" parent="."]
 [connection signal="timeout" from="NewAlbumTimer" to="." method="_on_NewAlbumTimer_timeout"]
 [connection signal="timeout" from="NewPhoneTimer" to="." method="_on_NewPhoneTimer_timeout"]
+[connection signal="timeout" from="NoAnswerPhoneTimer" to="." method="_on_NoAnswerPhoneTimer_timeout"]
 [connection signal="timeout" from="HPCountdownTimer" to="." method="_on_HPCountdownTimer_timeout"]
