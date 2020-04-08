@@ -1,6 +1,5 @@
 ### NEXT MILESTONE ###
 # @TODO Real game over screen / state
-# @TODO More artists track names
 # @TODO Basic UI
 #	- Show tooltip of highlighted album at cursor
 #	- Messages from waiting caller at various periods indicating impatience (or people dying)

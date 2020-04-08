@@ -1,6 +1,7 @@
 extends Area2D
 
 var Events
+var AlbumLibrary
 
 export var artist = '<unknown>'
 export var title = '<untitled>'
@@ -9,28 +10,16 @@ export var colour = Color(1.0, 1.0, 1.0)
 
 var album_shelf setget album_shelf_set, album_shelf_get
 var highlight_colour
-
-var artists = [
-	'Makoto Matsushita',
-	'Marasy8',
-	'The Consouls',
-	'Tommy Emmanuel',
-	'Magic Sword',
-	'Seasick Steve'	
-]
-
-var titles = [
-	"The dreamer",
-	"I am one",
-	"Many treats to Al Shishkabab",
-	"Dancer dancer",
-	"What we saw",
-	"Who is the man in the ladies' hat?"
-]
+var artists
+var titles
 
 
 func _ready():
 	Events = get_node("/root/Events")
+	AlbumLibrary = get_node("/root/AlbumLibrary")
+	artists = AlbumLibrary.ARTISTS
+	titles = AlbumLibrary.TITLES
+	
 	var colour_vec = Vector3(randf(), randf(), randf())
 	colour_vec = colour_vec.normalized()
 	colour = Color(colour_vec.x, colour_vec.y, colour_vec.z)
