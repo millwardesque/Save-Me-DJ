@@ -1,5 +1,4 @@
 ### NEXT MILESTONE ###
-# @TODO Real game over screen / state
 # @TODO Basic UI
 #	- Show tooltip of highlighted album at cursor
 #	- Messages from waiting caller at various periods indicating impatience (or people dying)
@@ -13,6 +12,8 @@
 # @TODO Difficulty curve
 # @TODO Central artist / title database to minimize space usage
 # @TODO Phone request database
+# @TODO Score, etc. on game over screen
+# @TODO Main title screen
 # @TODO Create music tracks per genre / era
 # @TODO Polish
 #	- Album-on-record-player sprite

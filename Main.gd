@@ -184,4 +184,4 @@ func _on_HPCountdownTimer_timeout():
 	hp_set(hp - hp_drain_per_sec)
 
 func _on_game_over():
-	$HUD.show_game_over(score)
+	get_tree().change_scene("res://GameOver.tscn")
