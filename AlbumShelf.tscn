@@ -6,7 +6,7 @@
 
 [node name="AlbumShelf" type="Node2D"]
 script = ExtResource( 1 )
-album_width = 10
+album_width = 20
 empty_album = ExtResource( 3 )
 
 [node name="Sprite" type="Sprite" parent="."]
