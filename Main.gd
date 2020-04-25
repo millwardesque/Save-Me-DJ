@@ -1,6 +1,7 @@
 extends Node
 
 export (PackedScene) var Album
+export (int) var starting_albums_per_shelf = 1
 var Events
 var selected_album
 var active_question = null
@@ -27,12 +28,13 @@ func _ready():
 	
 	Events.connect('phone_contextual_action', self, '_on_phone_contextual_action')
 	Events.connect('phone_caller_hangup', self, '_on_phone_caller_hangup')
+	Events.connect('phone_update_message', self, '_on_phone_update_message')
 		
 	hp_set(max_hp)
 	
 	score_set(0)
 	
-	for i in range(0, 5):
+	for i in range(0, starting_albums_per_shelf):
 		$AlbumShelf.remove_album(i)
 		$AlbumShelf.add_album(i, Album.instance())
 		
@@ -129,10 +131,10 @@ func _on_record_player_contextual_action(record_player):
 			_on_album_deselected()
 		
 		if active_question != null:
-			if $Phone.check_album(record_player.album):
-				end_call($Phone)				
+			if $Phone.check_album(record_player.album):		
 				score_set(score + 1)
 				hp_set(hp + 5)
+				$Phone.question_answered()
 			else:
 				$PhoneSpeaker/PhoneDialogBox.set_message("Nah, try again! " + active_question['question'])
 			
@@ -148,6 +150,9 @@ func _on_phone_contextual_action(phone):
 
 func _on_phone_caller_hangup(phone):
 	end_call(phone)
+	
+func _on_phone_update_message(phone, new_message):
+	$PhoneSpeaker/PhoneDialogBox.set_message(new_message)
 
 func _on_NoAnswerPhoneTimer_timeout():
 	end_call($Phone)

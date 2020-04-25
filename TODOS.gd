@@ -1,12 +1,12 @@
 ### NEXT MILESTONE ###
 # @TODO Basic UI
-#	- Messages from waiting caller at various periods indicating impatience (or people dying)
 #	- Colour of caller message (or phone?) indicates time remaining
-#	- 'Thanks' message from caller on success
-# @IDEA Drag-and-drop?
+# @BUG Incorrect overlap in albums on shelf sometimes. Reorder in scene graph manually?
+# @BUG Handle too-long album strings in dialog boxes
 
 ### BACKLOG ###
 # @TODO Limit album string length when generating albums
+# @TODO More variety in phone messages (esp. preamble, time running out messages, etc.)
 # @TODO Setting / story
 # @TODO Levels or play until death?
 # @TODO Difficulty curve
@@ -30,3 +30,4 @@
 # @IDEA Limit how many albums can be added to inbox
 # @IDEA Start with only a small number of albums to permit sorting
 # @TODO Calculate album.position.y when calling AlbumShelf@album_add instead of hardcoding
+# @IDEA Drag-and-drop?

@@ -28,5 +28,11 @@ centered = false
 
 [node name="CallDurationTimer" type="Timer" parent="."]
 wait_time = 10.0
+
+[node name="CallTimerPerSecond" type="Timer" parent="."]
+
+[node name="EndCallThanksTimer" type="Timer" parent="."]
 [connection signal="input_event" from="." to="." method="_on_Phone_input_event"]
 [connection signal="timeout" from="CallDurationTimer" to="." method="_on_CallDurationTimer_timeout"]
+[connection signal="timeout" from="CallTimerPerSecond" to="." method="_on_CallTimerPerSecond_timeout"]
+[connection signal="timeout" from="EndCallThanksTimer" to="." method="_on_EndCallThanksTimer_timeout"]

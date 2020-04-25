@@ -13,6 +13,7 @@
 [node name="Main" type="Node"]
 script = ExtResource( 2 )
 Album = ExtResource( 3 )
+starting_albums_per_shelf = 2
 
 [node name="Wallpaper" type="Sprite" parent="."]
 modulate = Color( 0.470588, 0.462745, 0.462745, 1 )

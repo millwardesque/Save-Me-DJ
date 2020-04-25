@@ -59,6 +59,7 @@ func answer_call(currently_playing, all_albums):
 			generate_question = check_album(currently_playing)
 	
 	$CallDurationTimer.start()
+	$CallTimerPerSecond.start()
 	return active_question
 		
 func end_call():
@@ -67,6 +68,8 @@ func end_call():
 	active_question = null
 	$AnimatedSprite.set_modulate(Color(1.0, 1.0, 1.0))
 	$CallDurationTimer.stop()
+	$CallTimerPerSecond.stop()
+	$EndCallThanksTimer.stop()
 	
 func check_album(album):
 	if active_question:
@@ -106,6 +109,13 @@ func fill_template(question, all_albums):
 		
 	if question["answer_predicates"].has("title"):
 		question["answer_predicates"]["title"] = title
+		
+func question_answered():
+	Events.emit_signal('phone_update_message', self, "Thanks a ton!")
+	$CallDurationTimer.stop()
+	$CallTimerPerSecond.stop()
+	$EndCallThanksTimer.start()
+
 
 func _on_Phone_input_event(_viewport, event, _shape_idx):
 	if (event.is_pressed() and event.button_index == BUTTON_RIGHT):
@@ -113,4 +123,16 @@ func _on_Phone_input_event(_viewport, event, _shape_idx):
 
 
 func _on_CallDurationTimer_timeout():
+	Events.emit_signal('phone_caller_hangup', self)
+
+
+func _on_CallTimerPerSecond_timeout():
+	var call_elapsed = $CallDurationTimer.wait_time - $CallDurationTimer.time_left
+	var call_elapsed_pct = call_elapsed / $CallDurationTimer.wait_time
+	
+	if call_elapsed_pct > 0.5:
+		Events.emit_signal('phone_update_message', self, "Hurray up, man!\n" + active_question.question)
+
+
+func _on_EndCallThanksTimer_timeout():
 	Events.emit_signal('phone_caller_hangup', self)
