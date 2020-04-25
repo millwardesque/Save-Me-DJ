@@ -27,6 +27,6 @@ animation = "placeholder"
 centered = false
 
 [node name="CallDurationTimer" type="Timer" parent="."]
-wait_time = 5.0
+wait_time = 10.0
 [connection signal="input_event" from="." to="." method="_on_Phone_input_event"]
 [connection signal="timeout" from="CallDurationTimer" to="." method="_on_CallDurationTimer_timeout"]

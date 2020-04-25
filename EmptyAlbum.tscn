@@ -1,6 +1,6 @@
 [gd_scene load_steps=5 format=2]
 
-[ext_resource path="res://art/album-spine.png" type="Texture" id=1]
+[ext_resource path="res://art/empty-album-spine.png" type="Texture" id=1]
 [ext_resource path="res://EmptyAlbum.gd" type="Script" id=2]
 
 [sub_resource type="SpriteFrames" id=1]
@@ -18,7 +18,6 @@ extents = Vector2( 12, 48 )
 script = ExtResource( 2 )
 
 [node name="AnimatedSprite" type="AnimatedSprite" parent="."]
-visible = false
 frames = SubResource( 1 )
 animation = "shelf"
 centered = false

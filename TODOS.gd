@@ -1,12 +1,12 @@
 ### NEXT MILESTONE ###
 # @TODO Basic UI
-#	- Show tooltip of highlighted album at cursor
 #	- Messages from waiting caller at various periods indicating impatience (or people dying)
 #	- Colour of caller message (or phone?) indicates time remaining
-#	- Background image
+#	- 'Thanks' message from caller on success
 # @IDEA Drag-and-drop?
 
 ### BACKLOG ###
+# @TODO Limit album string length when generating albums
 # @TODO Setting / story
 # @TODO Levels or play until death?
 # @TODO Difficulty curve
@@ -29,3 +29,4 @@
 # @IDEA Remove album from shelf/record player on select
 # @IDEA Limit how many albums can be added to inbox
 # @IDEA Start with only a small number of albums to permit sorting
+# @TODO Calculate album.position.y when calling AlbumShelf@album_add instead of hardcoding

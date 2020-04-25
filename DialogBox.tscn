@@ -1,0 +1,24 @@
+[gd_scene load_steps=2 format=2]
+
+[ext_resource path="res://DialogBox.gd" type="Script" id=1]
+
+[node name="DialogBox" type="Panel"]
+anchor_bottom = 1.0
+margin_right = 482.0
+margin_bottom = -522.0
+script = ExtResource( 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Message" type="RichTextLabel" parent="."]
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = 8.0
+margin_top = 8.0
+margin_right = -8.0
+margin_bottom = -8.0
+text = "This is my message"
+__meta__ = {
+"_edit_use_anchors_": false
+}

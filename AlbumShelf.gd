@@ -48,7 +48,7 @@ func add_album(index, album):
 		add_child(album)
 		albums[index] = album
 		album.album_shelf = self
-		album.position.y = 0
+		album.position.y = -58
 		album.position.x = index * album_width
 
 func remove_album(index):

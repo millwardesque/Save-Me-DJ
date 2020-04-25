@@ -43,16 +43,19 @@ func _ready():
 	$NewPhoneTimer.start()
 	$HPCountdownTimer.start()
 	
-	
 func _on_album_highlighted(album):
-	$HUD.set_highlighted_album(album.album_string())
+	$HighlightedAlbumTooltip.set_message(album.album_string())
+	$HighlightedAlbumTooltip.set_position(Vector2(album.global_position.x, album.global_position.y - $HighlightedAlbumTooltip.rect_size.y - 10))
 
 func _on_album_unhighlighted():
-	$HUD.clear_highlighted_album()
+	$HighlightedAlbumTooltip.clear_message()
 	
 func _on_album_selected(album):
 	selected_album = album
-	$HUD.set_selected_album(album.album_string())
+	
+	var mouse_position = get_viewport().get_mouse_position()
+	$SelectedAlbumDialogBox.set_position(Vector2(mouse_position.x, mouse_position.y + 5))
+	$SelectedAlbumDialogBox.set_message(album.album_string())
 	
 func _on_album_contextual_action(album):
 	if selected_album != null and selected_album != album:
@@ -62,7 +65,7 @@ func _on_album_contextual_action(album):
 			selected_album.album_shelf.set_empty_album(selected_index)
 		elif selected_album == $RecordPlayer.album:
 			$RecordPlayer.album = null
-			$HUD.clear_playing_album()
+			$NowPlayingDialogBox.clear_message()
 		
 		# Replace the clicked album with the selected album
 		album.album_shelf.replace_album(selected_album, album)
@@ -71,7 +74,7 @@ func _on_album_contextual_action(album):
 
 func _on_album_deselected():
 	selected_album = null
-	$HUD.clear_selected_album()
+	$SelectedAlbumDialogBox.clear_message()
 
 func _on_empty_album_contextual_action(album):
 	if selected_album != null:
@@ -81,13 +84,17 @@ func _on_empty_album_contextual_action(album):
 			selected_album.album_shelf.set_empty_album(selected_index)
 		elif selected_album == $RecordPlayer.album:
 			$RecordPlayer.album = null
-			$HUD.clear_playing_album()
+			$NowPlayingDialogBox.clear_message()
 		
 		# Replace the clicked album with the selected album
 		album.album_shelf.replace_album(selected_album, album)
 		
 		_on_album_deselected()
 
+func _input(event):
+	if selected_album != null and event is InputEventMouseMotion:
+		$SelectedAlbumDialogBox.set_position(Vector2(event.position.x, event.position.y + 5))
+	
 func _on_NewAlbumTimer_timeout():
 	var next_space = $AlbumInbox.next_empty_album()
 	if next_space != null:
@@ -127,15 +134,15 @@ func _on_record_player_contextual_action(record_player):
 				score_set(score + 1)
 				hp_set(hp + 5)
 			else:
-				$HUD.set_phone_dialog("Nah, try again! " + active_question['question'])
+				$PhoneSpeaker/PhoneDialogBox.set_message("Nah, try again! " + active_question['question'])
 			
-		$HUD.set_playing_album(record_player.album.album_string())
+		$NowPlayingDialogBox.set_message(record_player.album.album_string())
 		
 func _on_phone_contextual_action(phone):
 	if phone.is_ringing:
 		$NoAnswerPhoneTimer.stop()
 		active_question = phone.answer_call($RecordPlayer.album, all_albums())
-		$HUD.set_phone_dialog(active_question['question'])
+		$PhoneSpeaker/PhoneDialogBox.set_message(active_question['question'])
 	elif phone.is_online:
 		end_call(phone)
 
@@ -150,7 +157,8 @@ func end_call(phone):
 	active_question = null
 	$NoAnswerPhoneTimer.stop()	# Reset the phone timer
 	$NewPhoneTimer.start()	# Reset the phone timer
-	$HUD.clear_phone_dialog()
+
+	$PhoneSpeaker/PhoneDialogBox.clear_message()
 	
 func all_albums():
 	var albums = []
