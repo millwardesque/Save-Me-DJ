@@ -41,13 +41,13 @@ func trigger_call():
 	is_online = false
 	active_question = null
 	
-	$AnimatedSprite.set_modulate(Color(1.0, 0.0, 0.0))
+	$PhoneButton.set_modulate(Color(1.0, 0.0, 0.0))
 	
 func answer_call(currently_playing, all_albums):
 	is_ringing = false
 	is_online = true
 	
-	$AnimatedSprite.set_modulate(Color(0.0, 1.0, 0.0))
+	$PhoneButton.set_modulate(Color(0.0, 1.0, 0.0))
 	
 	var generate_question = true
 	while generate_question:
@@ -66,7 +66,7 @@ func end_call():
 	is_ringing = false
 	is_online = false
 	active_question = null
-	$AnimatedSprite.set_modulate(Color(1.0, 1.0, 1.0))
+	$PhoneButton.set_modulate(Color(1.0, 1.0, 1.0))
 	$CallDurationTimer.stop()
 	$CallTimerPerSecond.stop()
 	$EndCallThanksTimer.stop()
