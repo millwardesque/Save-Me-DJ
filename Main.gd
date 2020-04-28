@@ -9,7 +9,7 @@ var score = 0 setget score_set
 
 var max_hp = 100.0
 var hp = 0.0 setget hp_set
-var hp_drain_per_sec = 0.5
+var hp_drain_per_sec = 2
 
 # Called when the node enters the scene tree for the first time.
 func _ready():

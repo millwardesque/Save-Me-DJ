@@ -7,6 +7,8 @@ var album setget album_set, album_get
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	Events = get_node("/root/Events")
+	$RecordSprite.animation = 'off'
+	$RecordSprite.set_modulate(Color(1.0, 1.0, 1.0))
 	
 func now_playing_string():
 	if album != null:
@@ -27,6 +29,11 @@ func album_set(new_album):
 		add_child(new_album)
 		new_album.hide()
 		new_album.album_shelf = null
+		$RecordSprite.animation = 'on'
+		$RecordSprite.set_modulate(new_album.colour)
+	else:
+		$RecordSprite.animation = 'off'
+		$RecordSprite.set_modulate(Color(1.0, 1.0, 1.0))
 	
 	album = new_album
 

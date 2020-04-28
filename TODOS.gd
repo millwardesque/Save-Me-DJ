@@ -1,8 +1,10 @@
 ### NEXT MILESTONE ###
 # @TODO Basic UI
 #	- Colour of caller message (or phone?) indicates time remaining
+#	- Handle too-long album strings in dialog boxes
+#	- Better phone pic for idle / ringing
+#	- Better record player pics for empty / playing
 # @BUG Incorrect overlap in albums on shelf sometimes. Reorder in scene graph manually?
-# @BUG Handle too-long album strings in dialog boxes
 
 ### BACKLOG ###
 # @TODO Limit album string length when generating albums

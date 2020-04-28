@@ -1,16 +1,31 @@
-[gd_scene load_steps=5 format=2]
+[gd_scene load_steps=8 format=2]
 
-[ext_resource path="res://art/record-player.png" type="Texture" id=1]
+[ext_resource path="res://art/record-player-off.png" type="Texture" id=1]
 [ext_resource path="res://RecordPlayer.gd" type="Script" id=2]
+[ext_resource path="res://art/record-player-on.png" type="Texture" id=3]
+[ext_resource path="res://art/record-player-base.png" type="Texture" id=4]
 
 [sub_resource type="RectangleShape2D" id=1]
-extents = Vector2( 64, 64 )
+extents = Vector2( 64, 20.2622 )
 
 [sub_resource type="SpriteFrames" id=2]
 animations = [ {
-"frames": [ ExtResource( 1 ) ],
+"frames": [ ExtResource( 4 ) ],
 "loop": true,
 "name": "idle",
+"speed": 5.0
+} ]
+
+[sub_resource type="SpriteFrames" id=3]
+animations = [ {
+"frames": [ ExtResource( 3 ) ],
+"loop": true,
+"name": "on",
+"speed": 5.0
+}, {
+"frames": [ ExtResource( 1 ) ],
+"loop": true,
+"name": "off",
 "speed": 5.0
 } ]
 
@@ -18,11 +33,16 @@ animations = [ {
 script = ExtResource( 2 )
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
-position = Vector2( 64, 64 )
+position = Vector2( 64.3068, 20.0431 )
 shape = SubResource( 1 )
 
-[node name="AnimatedSprite" type="AnimatedSprite" parent="."]
+[node name="RecordPlayerSprite" type="AnimatedSprite" parent="."]
 frames = SubResource( 2 )
 animation = "idle"
+centered = false
+
+[node name="RecordSprite" type="AnimatedSprite" parent="."]
+frames = SubResource( 3 )
+animation = "off"
 centered = false
 [connection signal="input_event" from="." to="." method="_on_RecordPlayer_input_event"]
